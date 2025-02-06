@@ -1,0 +1,15 @@
+header{
+    background-color: bisque;
+    color: black;
+}
+
+#navbaroptions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#coursebutton, #homebutton{
+    color: black;
+    font-weight: 540;
+}
