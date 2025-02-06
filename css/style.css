@@ -15,5 +15,11 @@ header{
 }
 
 footer{
+    padding: 10px;
+    text-align: center;
     background-color: #0f1111;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
