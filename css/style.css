@@ -1,6 +1,6 @@
 header{
-    background-color: bisque;
-    color: black;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient colors */
+        color: black;
 }
 
 #navbaroptions{
@@ -22,4 +22,94 @@ footer{
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    text-align: center;
+    flex-direction: column;
+}
+
+.homepagecontent{
+    background-image: url('images/homepage_background_logo.png');
+    background-size: cover; /* Cover the entire screen */
+    background-position: center;
+    background-repeat: no-repeat;;
+}
+
+#homepagelogin{
+    height: 3rem;
+    width: 4rem;
+    border-radius: 4px;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient colors */
+}
+
+#homepageregister{
+    margin: 10px;
+    height: 3rem;
+    width: 5rem;
+    border-radius: 4px;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient colors */
+}
+
+#homepagelogin:hover{
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+#homepageregister:hover{
+    box-shadow: 0px 4px 10px rgba(12, 4, 43, 0.6);
+}
+
+.gradient-btn-log-in {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: none;
+    color: #000;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient colors */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gradient-btn-log-in:hover {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.6);
+}
+
+.loginformoptions{
+    border: 2px solid #000;
+    height: 3rem;
+    border-radius: 5px;
+    background-color: #fad6cd;
+    margin-bottom: 5px;
+}
+
+.regformoption{
+    margin-bottom: 8px;
+}
+
+.gradient-btn-register {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: none;
+    color: #000;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient colors */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gradient-btn-register:hover {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.6);
+}
+
+.regformoption{
+    border: 2px solid #000;
+    height: 3rem;
+    border-radius: 5px;
+    background-color: #fad6cd;
 }
