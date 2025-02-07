@@ -2,6 +2,10 @@ header{
     background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient colors */
         color: black;
 }
+.navbar{
+    position: static;
+    z-index: 2;
+}
 
 #navbaroptions{
     display: flex;
@@ -22,6 +26,7 @@ footer{
     position: fixed;
     bottom: 0;
     width: 100%;
+    z-index: 1;
 }
 
 main{
@@ -31,6 +36,7 @@ main{
     height: 70vh;
     text-align: center;
     flex-direction: column;
+    z-index: -1;
 }
 
 .homepagecontent{
