@@ -6,6 +6,8 @@
 
 {% block content %}
     <main>
+        <h2>Our Most Favourite Courses</h2>
+
         <div class="container-fluid">
             <div class="container">
                 <div class="row ">
@@ -21,20 +23,9 @@
                         <img src="/static/images/web_dev.jpeg" alt="">
                         <h3>Web Developement</h3>
                     </div>
-                    <div class="col">
-                        <img src="/static/images/dbms.jpeg" alt="">
-                        <h3>Database Management System</h3>
-                    </div>
-                    <div class="col">
-                        <img src="/static/images/ml.jpeg" alt="">
-                        <h3>Machine Lerning</h3>
-                    </div>
-                    <div class="col">
-                        <img src="/static/images/cybersecurity.jpeg" alt="">
-                        <h3>Cyber Security</h3>
-                    </div>
                 </div>
             </div>
         </div>
+        <h5>Login to explore more. <a href="{{ url_for('login_page') }}">Go to Login</a></h5>
     </main>
 {% endblock %}
