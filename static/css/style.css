@@ -4,6 +4,9 @@ header{
 }
 .navbar{
     position: static;
+}
+
+header{
     z-index: 2;
 }
 

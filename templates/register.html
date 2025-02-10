@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Register-QuizMasrer
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div>
+            <h2>Join QuizMaster!</h2>
+            <h2>Create an account</h2>
+        </div>
+        <div>
+            <p>Start leveling up your knowledge here</p>
+        </div>
+        <div>
+            <form action="">
+                <input class="regformoption" type="text" placeholder="Create Username"><br>
+                <input class="regformoption"  type="email" placeholder="Email ID"><br>
+                <input class="regformoption"  type="password" placeholder="Password"><br>
+                <input class="regformoption"  type="text" placeholder="Full Name"><br>
+                <input class="regformoption"  type="text" placeholder="Qualification"><br>
+                <input class="regformoption"  type="datetime" placeholder="DOB">
+                
+            </form>
+        </div>
+        <div>
+            <button class="gradient-btn-register">Create account</button>
+        </div>
+
+        <div>
+            <p>Already have an account? <a href="login.html">Sign In</a></p>
+        </div>
+    </main>
+{% endblock %}
