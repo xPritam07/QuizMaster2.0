@@ -6,26 +6,24 @@
 
 
 {% block content %}
-    <main>
-        <div>
-            <h2>Welcome Back!</h2>
-            <h2>Login to your account</h2>
-        </div>
-        <div>
-            <p>Nice to see you back. Ready for a test?</p>
-        </div>
-        <div>
-            <form action="#">
-                <input class="loginformoptions" type="email" placeholder="Your Email ID">
-                <input class="loginformoptions" type="password" placeholder="Password">
-            </form>
-        </div>
-        <br>
-        <div>
-            <button class="gradient-btn-log-in">Log In</button>
-        </div>
-        <div>
-            <p>Don't have an account? <a href="register.html">Sign Up</a></p>
-        </div>
-    </main>
+    <div>
+        <h2>Welcome Back!</h2>
+        <h2>Login to your account</h2>
+    </div>
+    <div>
+        <p>Nice to see you back. Ready for a test?</p>
+    </div>
+    <div>
+        <form action="#">
+            <input class="loginformoptions" type="email" placeholder="Your Email ID">
+            <input class="loginformoptions" type="password" placeholder="Password">
+        </form>
+    </div>
+    <br>
+    <div>
+        <button class="gradient-btn-log-in">Log In</button>
+    </div>
+    <div>
+        <p>Don't have an account? <a href="{{ url_for('register_page') }}">Sign Up</a></p>
+    </div>
 {% endblock %}
