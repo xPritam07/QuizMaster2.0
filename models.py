@@ -51,3 +51,8 @@ class Scores(db.Model):
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
     date_of_quiz=db.Column(db.Date,nullable=False)
     time_duration=db.Column(db.Time,nullable=False)
+
+
+#create database
+with app.app_context():
+    db.create_all()
