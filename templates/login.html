@@ -14,15 +14,17 @@
         <p>Nice to see you back. Ready for a test?</p>
     </div>
     <div>
-        <form action="#">
-            <input class="loginformoptions" type="email" placeholder="Your Email ID">
-            <input class="loginformoptions" type="password" placeholder="Password">
-        </form>
+        <form method="post">
+            <label for="email" class="form-label">Your Email ID:</label>
+            <input class="loginformoptions form-control" type="email" id="email" name="email" required autocomplete="email">
+            
+            <label for="password">Password:</label>
+            <input class="loginformoptions form-control" type="password" id="password" name="password" required autocomplete="current-password">
+            
+            <button type="submit" class="gradient-btn-log-in">Login</button>
+        </form>        
     </div>
     <br>
-    <div>
-        <button class="gradient-btn-log-in">Log In</button>
-    </div>
     <div>
         <p>Don't have an account? <a href="{{ url_for('register_page') }}">Sign Up</a></p>
     </div>
