@@ -1,6 +1,7 @@
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from quiz import app
-db= SQLAlchemy(app)
+db = SQLAlchemy(app)
 
 
 class User(db.Model):
@@ -11,6 +12,12 @@ class User(db.Model):
     full_name=db.Column(db.String(32),nullable=False)
     dob=db.Column(db.String(32),nullable=False)
     qualification=db.Column(db.String(32),nullable=False)
+
+    def set_password(self,password):
+        self.passhash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.passhash, password)
 
 
 class Subject(db.Model):
@@ -51,8 +58,3 @@ class Scores(db.Model):
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
     date_of_quiz=db.Column(db.Date,nullable=False)
     time_duration=db.Column(db.Time,nullable=False)
-
-
-#create database
-with app.app_context():
-    db.create_all()
