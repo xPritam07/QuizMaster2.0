@@ -20,6 +20,9 @@ def login_page():
 def login_post():
     username= request.form.get('username')
     password= request.form.get('password')
+    if username=='' or password=='':
+        flash('UserName and Password can not be empty.')
+        return redirect(url_for('login_page'))
     user= User.query.filter_by(username=username).first()
     if not user:
         flash("User does not exist.")
@@ -34,6 +37,29 @@ def login_post():
 @app.route('/register')
 def register_page():
     return render_template('register.html')
+
+@app.route('/register',methods=['POST'])
+def register_post():
+    username=request.form['username']
+    password=request.form['password']
+    full_name=request.form['full_name']
+    dob=request.form['date']
+    qualification=request.form['qualification']
+    if username=='' or password=='':
+        flash('UserName and Password can not be empty.')
+        return redirect(url_for('register_page'))
+    print("ho")
+    if User.query.filter_by(username=username).first():
+        flash('User already exists.')
+        return redirect(url_for('register_page'))
+    print("hi")
+    user=User(username=username, full_name=full_name,password=password, dob=dob, qualification=qualification)
+    print(user)
+    db.session.add(user)
+    db.session.commit()
+    flash('Successful Registration.')
+    return redirect(url_for('login_page'))
+    
 
 @app.route('/admin_dashboard')
 def admin_dashboard():

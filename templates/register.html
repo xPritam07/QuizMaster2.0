@@ -6,28 +6,24 @@
 
 {% block content %}
     <div>
-        <h2>Join QuizMaster!</h2>
-        <h2>Create an account</h2>
+        <h2>Join QuizMaster! Create an account</h2>
     </div>
     <div>
         <p>Start leveling up your knowledge here</p>
     </div>
     <div>
-        <form method="post">
-            <input class="regformoption form-control" type="text" name="username" placeholder="Create Username">
+        <form action="{{ url_for('register_post') }}" method="POST">
+            <input class="regformoption form-control" type="emai" name="username"  placeholder="Create Username" required />
 
-            <input class="regformoption form-control"  type="email" name="email" placeholder="Email ID">
+            <input class="regformoption form-control" name="password" type="password" placeholder="Password" required />
 
-            <input class="regformoption form-control" name="password" type="password" placeholder="Password">
+            <input class="regformoption form-control"  type="text" name="full_name"  placeholder="Full Name" required />
 
-            <input class="regformoption form-control"  type="text" name="name" placeholder="Full Name">
+            <input class="regformoption form-control"  type="text" name="qualification"  placeholder="Qualification" />
 
-            <input class="regformoption form-control"  type="text" name="qualification" placeholder="Qualification">
+            <input class="regformoption form-control"  type="date" name="date"  required />
 
-            <input class="regformoption form-control"  type="date" name="date">
-
-            <button class="gradient-btn-register">Create account</button>
-            
+            <button class="gradient-btn-register">Create account</button>   
         </form>
     </div>
 

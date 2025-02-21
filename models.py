@@ -5,15 +5,20 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
-    __tablename__='user'
-    id= db.Column(db.Integer,primary_key=True)
-    username=db.Column(db.String(32),unique=True,nullable=False)
-    passhash=db.Column(db.String(128),nullable=False)
-    full_name=db.Column(db.String(32),nullable=False)
-    dob=db.Column(db.String(32),nullable=False)
-    qualification=db.Column(db.String(32),nullable=False)
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(32), unique=True, nullable=False)
+    passhash = db.Column(db.String(128), nullable=False)
+    full_name = db.Column(db.String(32), nullable=False)
+    dob = db.Column(db.String(32), nullable=False)
+    qualification = db.Column(db.String(32), nullable=True)
 
-    def set_password(self,password):
+    @property
+    def password(self):
+        raise AttributeError('Password is secret')
+    
+    @password.setter
+    def password(self, password):
         self.passhash = generate_password_hash(password)
 
     def check_password(self, password):
@@ -58,3 +63,7 @@ class Scores(db.Model):
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
     date_of_quiz=db.Column(db.Date,nullable=False)
     time_duration=db.Column(db.Time,nullable=False)
+
+
+with app.app_context():
+    db.create_all()
