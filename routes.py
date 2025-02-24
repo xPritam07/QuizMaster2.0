@@ -48,13 +48,10 @@ def register_post():
     if username=='' or password=='':
         flash('UserName and Password can not be empty.')
         return redirect(url_for('register_page'))
-    print("ho")
     if User.query.filter_by(username=username).first():
         flash('User already exists.')
         return redirect(url_for('register_page'))
-    print("hi")
     user=User(username=username, full_name=full_name,password=password, dob=dob, qualification=qualification)
-    print(user)
     db.session.add(user)
     db.session.commit()
     flash('Successful Registration.')
