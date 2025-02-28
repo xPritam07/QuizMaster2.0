@@ -1,7 +1,14 @@
-from flask import render_template, request, redirect, flash, url_for
+from flask import render_template, request, redirect, flash, url_for, session
 from models import db, User, Subject, Chapter, Quiz, Questions, Scores
 from quiz import app 
+session={}
 
+def check_session():
+    if 'user_id' not in session:
+        flash('Please login to continue')
+        return False
+    return True
+    
 
 @app.route('/home')
 @app.route('/')
@@ -31,8 +38,9 @@ def login_post():
         flash("Incorrect password.")
         return redirect(url_for('login_page'))
     #successful login
-    flash('Login Successful!')
-    return redirect(url_for('home_page'))
+    session['user_id']=user.id
+    return redirect(url_for('student_dashboard'))
+        
 
 @app.route('/register')
 def register_page():
@@ -56,8 +64,23 @@ def register_post():
     db.session.commit()
     flash('Successful Registration.')
     return redirect(url_for('login_page'))
-    
 
-@app.route('/admin_dashboard')
-def admin_dashboard():
-    return render_template('admin_dashboard.html')
+
+@app.route('/dashboard')
+def student_dashboard():
+    if not check_session():
+        return redirect(url_for('login_page'))
+    return render_template('student_dashboard.html')
+
+@app.route('/course/quiz')
+def course_login():
+    if not check_session():
+        return redirect(url_for('login_page'))
+    return render_template('afterlogin_coursepage.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id',None)
+    flash('Loged out Successfully!')
+    return redirect(url_for('login_page'))
+

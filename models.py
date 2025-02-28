@@ -10,8 +10,10 @@ class User(db.Model):
     username = db.Column(db.String(32), unique=True, nullable=False)
     passhash = db.Column(db.String(128), nullable=False)
     full_name = db.Column(db.String(32), nullable=False)
-    dob = db.Column(db.String(32), nullable=False)
+    dob = db.Column(db.String(32), nullable=True)
     qualification = db.Column(db.String(32), nullable=True)
+    is_admin=db.Column(db.Boolean,nullable=False,default=False)
+
 
     @property
     def password(self):
@@ -67,3 +69,8 @@ class Scores(db.Model):
 
 with app.app_context():
     db.create_all()
+    admin = User.query.filter_by(username='admin').first()
+    if not admin:
+        admin=User(username='admin',password='admin',full_name='admin',is_admin=True)
+        db.session.add(admin)
+        db.session.commit()
