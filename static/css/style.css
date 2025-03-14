@@ -42,12 +42,6 @@ main{
     z-index: -1;
 }
 
-.homepagecontent{
-    background-image: url('images/homepage_background_logo.png');
-    background-size: cover; /* Cover the entire screen */
-    background-position: center;
-    background-repeat: no-repeat;;
-}
 
 #homepagelogin{
     margin: 10px;
