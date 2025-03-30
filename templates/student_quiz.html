@@ -1,0 +1,38 @@
+{% extends 'after_login_base.html' %}
+{% block title %}
+    Quiz
+{% endblock %}
+{% block content %}
+    <header>
+        <nav class="navbar navbar-expand-lg container-fluid shadow" id="navbar">
+            <a class="navbar-brand" href="{{ url_for('home_page') }}"><img src="/static/images/website-logo.png" alt=""></a>
+        </nav>
+    </header>
+    <main class="container">
+        <h2 class="my-4 text-center">Quiz</h2>
+        <form action="{{ url_for('submit_quiz', chapter_id=chapter.id) }}" method="POST">
+            {% for question in questions %}
+                <div class="card my-3 shadow-sm p-3">
+                    <p><strong>{{ loop.index }}. {{ question.q_statement }}</strong></p>
+                    <div class="form-check">
+                        <input type="radio" id="q{{ question.id }}_a" name="q{{ question.id }}" value="option_a" class="form-check-input" required>
+                        <label class="form-check-label" for="q{{ question.id }}_a">{{ question.option_a }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="q{{ question.id }}_b" name="q{{ question.id }}" value="option_b" class="form-check-input" required>
+                        <label class="form-check-label" for="q{{ question.id }}_b">{{ question.option_b }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="q{{ question.id }}_c" name="q{{ question.id }}" value="option_c" class="form-check-input" required>
+                        <label class="form-check-label" for="q{{ question.id }}_c">{{ question.option_c }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="q{{ question.id }}_d" name="q{{ question.id }}" value="option_d" class="form-check-input" required>
+                        <label class="form-check-label" for="q{{ question.id }}_d">{{ question.option_d }}</label>
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success w-100">Submit Quiz</button>
+        </form>
+    </main>
+{% endblock %}

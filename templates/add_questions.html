@@ -1,0 +1,54 @@
+{% extends 'after_login_base.html' %}
+{% block title %}
+    Add Quiz
+{% endblock %}
+{% block content %}
+    <header>
+        <nav class="navbar navbar-expand-lg container-fluid shadow" id="navbar">
+            <a class="navbar-brand" href="{{ url_for('home_page') }}"><img src="/static/images/website-logo.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="fa-solid fa-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav" id="navbaroptions">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('show_subject', id=chapter.id) }}"><button type="button" class="btn btn-dark">Go Back</button></a></li>
+                </ul>
+                <ul class="navbar-nav" id="navbaroptions">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-dark">Log Out</button></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h2>
+            Add quiz
+        </h2>
+        <form action="{{ url_for('add_questions_post', id=chapter.id) }}" method="POST" class="container">
+            <div class="mb-3">
+                <label for="q_statement" class="form-label">Question</label>
+                <input type="text" class="form-control" id="q_statement" name="q_statement" required>
+            </div>
+            <div class="mb-3">
+                <label for="option1" class="form-label">Option1</label>
+                <input type="text" class="form-control" id="option1" name="option1" required>
+            </div>
+            <div class="mb-3">
+                <label for="option2" class="form-label">Option2</label>
+                <input type="text" class="form-control" id="option2" name="option2" required>
+            </div>
+            <div class="mb-3">
+                <label for="option3" class="form-label">Option3</label>
+                <input type="text" class="form-control" id="option3" name="option3" required>
+            </div>
+            <div class="mb-3">
+                <label for="option4" class="form-label">Option4</label>
+                <input type="text" class="form-control" id="option4" name="option4" required>
+            </div>
+            <div class="mb-3">
+                <label for="answer" class="form-label">Answer</label>
+                <input type="text" class="form-control" id="answer" name="answer" required>
+            </div>
+            <button class="btn btn-success">Submit</button>
+        </form>
+    </main>
+{% endblock %}

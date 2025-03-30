@@ -1,0 +1,43 @@
+{% extends 'after_login_base.html' %}
+{% block title %}
+    Chapters
+{% endblock %}
+{% block content %}
+<header>
+    <nav class="navbar navbar-expand-lg container-fluid shadow" id="navbar">
+        <a class="navbar-brand" href="{{ url_for('home_page') }}"><img src="/static/images/website-logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav" id="navbaroptions">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('course_registration') }}" id="coursebutton"><button type="button" class="btn btn-dark">Courses</button></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-dark">Log Out</button></a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="main_content">  
+        <div>
+            <h2>Chapters</h2>
+            <table class="table table-striped table-hover student_course_table">
+                <thead>
+                    <tr>
+                        <th>Chapter Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chapter in chapters %}
+                        <tr>
+                            <td>{{ chapter.chapter_name }}</td>
+                            <td><a href="{{ url_for('take_quiz', id=chapter.id) }}"><button class="btn btn-primary">Take a Quiz</button></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+{% endblock %}

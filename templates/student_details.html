@@ -1,8 +1,7 @@
 {% extends 'after_login_base.html' %}
 {% block title %}
-    Course
+    Student Details
 {% endblock %}
-
 {% block content %}
     <header>
         <nav class="navbar navbar-expand-lg container-fluid shadow" id="navbar">
@@ -11,31 +10,42 @@
                 <span><i class="fa-solid fa-bars"></i></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav" id="navbaroptions">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('student_dashboard') }}" id="homebutton"><button type="button" class="btn btn-dark">Profile</button></a></li>
+                <ul class="navbar-nav
+                " id="navbaroptions">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}"><button type="button" class="btn btn-dark">Course Details</button></a></li>
+                </ul>
+                <ul class="navbar-nav
+                " id="navbaroptions">
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-dark">Log Out</button></a></li>
                 </ul>
             </div>
         </nav>
     </header>
     <main>
-        <h2>Available Courses</h2>
-        <table class="table table-striped table-hover student_course_table">
+        <div class="heading">
+            <h3>Students List</h3>
+        </div>
+
+        
+        <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th>Course Name</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Date of Birth</th>
+                    <th>Qualification</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for subject in subjects %}
+                {% for student in students %}
                     <tr>
-                        <td>{{ subject.sub_name }}</td>
+                        <td>{{ student.full_name }}</td>
+                        <td>{{ student.username }}</td>
+                        <td>{{ student.dob }}</td>
+                        <td>{{ student.qualification }}</td>
                         <td>
-                            <form action="{{ url_for('course_registration') }}" method="POST">
-                                <input type="hidden" name="subject_id" value="{{ subject.id }}">
-                                <button type="submit" class="btn btn-primary">Register</button>
-                            </form>
+                            <a href="{{ url_for('remove_student', id=student.id) }}"><button class="btn btn-danger"><i class="fas fa-trash fa-sm"></i>Remove</button></a>
                         </td>
                     </tr>
                 {% endfor %}

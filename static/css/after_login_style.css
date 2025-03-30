@@ -1,0 +1,56 @@
+header{
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient colors */
+        color: black;
+}
+.navbar{
+    position: static;
+}
+
+#navbaroptions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px;
+    margin: 15px;
+}
+
+.table-admin{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px;
+    border: 2px solid black;
+}
+h2{
+    margin: 10px;
+    text-align: center;
+}
+
+#profile_section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+#profile_section {
+    margin: 20px;
+    gap: 20px;
+    padding: 20px;
+}
+
+.student_course_table{
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.table{
+    justify-content: center;
+    align-items: center;
+}
