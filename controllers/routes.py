@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, flash, url_for, session
+import models.models as models
 from functools import wraps
 from models.models import db, User, Subject, Chapter, Questions, Scores, UserEnrollment
 from quiz import app 
