@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, flash, url_for, session
 from functools import wraps
-from models import db, User, Subject, Chapter, Questions, Scores, UserEnrollment
+from models.models import db, User, Subject, Chapter, Questions, Scores, UserEnrollment
 from quiz import app 
 from datetime import datetime, timedelta
 
@@ -226,17 +226,32 @@ def submit_quiz(chapter_id):
     questions = Questions.query.filter_by(chapter_id=chapter_id).all()
     quiz_duration = 300  
 
-    score = 0
-    for question in questions:
-        user_answer = request.form.get(f"q{question.id}")
-        if user_answer == str(question.correct_answer):
-            score += 1
-    new_score = Scores(user_id=user.id, chapter_id=chapter.id, score=score, date_of_quiz=str(datetime.now().date()), 
-                       time_duration=str(timedelta(seconds=quiz_duration)))
+    score = sum(1 for question in questions if request.form.get(f"q{question.id}") == str(question.correct_answer))
+
+    new_score = Scores(
+        user_id=user.id, 
+        chapter_id=chapter.id, 
+        score=score, 
+        date_of_quiz=datetime.now().date(), 
+        time_duration=str(timedelta(seconds=quiz_duration))
+    )
     db.session.add(new_score)
     db.session.commit()
 
-    return redirect(url_for('student_dashboard'))
+    return redirect(url_for('results', score_id=new_score.id))  
+
+@app.route('/results')
+@auth_required
+def results():
+    user = User.query.get(session['user_id'])
+    latest_score = Scores.query.filter_by(user_id=user.id).order_by(Scores.date_of_quiz.desc()).first()
+    
+    if not latest_score:
+        return redirect(url_for('student_dashboard'))
+
+    return render_template('score.html', user=user, score=latest_score)  
+
+
 
 @app.route('/unregister/<int:id>')
 @auth_required
