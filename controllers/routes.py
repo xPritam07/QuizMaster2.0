@@ -1,9 +1,13 @@
 from flask import render_template, request, redirect, flash, url_for, session
-import models.models as models
 from functools import wraps
 from models.models import db, User, Subject, Chapter, Questions, Scores, UserEnrollment
 from quiz import app 
 from datetime import datetime, timedelta
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import os
+import uuid
 
 def auth_required(func):
     @wraps(func)
@@ -109,6 +113,19 @@ def add_subject_post():
         db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
+@app.route('/edit_subject/<int:id>', methods=['GET', 'POST'])
+def edit_subject(id):
+    subject = Subject.query.get_or_404(id)
+
+    if request.method == 'POST':
+        subject.sub_name = request.form['sub_name']
+        subject.description = request.form['description']
+        db.session.commit()
+        flash('Subject updated successfully!', 'success')
+        return redirect(url_for('admin_dashboard'))
+
+    return render_template('edit_subject.html', subject=subject)
+
 @app.route('/subject/<int:id>/show')
 @admin_required
 def show_subject(id):
@@ -119,6 +136,74 @@ def show_subject(id):
     chapters=Chapter.query.filter_by(sub_id=id).all()
     return render_template("subject_details.html",chapters=chapters,subject=subject)
 
+@app.route('/chapter/<int:chapter_id>/questions')
+@admin_required
+def show_questions(chapter_id):
+    chapter = Chapter.query.get_or_404(chapter_id)
+    questions = Questions.query.filter_by(chapter_id=chapter_id).all()
+    return render_template('show_quiz.html', chapter=chapter, questions=questions)
+
+@app.route('/question/edit/<int:question_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_question(question_id):
+    question = Questions.query.get_or_404(question_id)
+
+    if request.method == 'POST':
+        question.q_statement = request.form['q_statement']
+        question.option_a = request.form['option_a']
+        question.option_b = request.form['option_b']
+        question.option_c = request.form['option_c']
+        question.option_d = request.form['option_d']
+        question.correct_answer = request.form['correct_answer']
+
+        db.session.commit()
+        flash('Question updated successfully!', 'success')
+        return redirect(url_for('show_questions', chapter_id=question.chapter_id))
+
+    return render_template('edit_quiz.html', question=question)
+
+@app.route('/question/delete/<int:question_id>')
+@admin_required
+def delete_question(question_id):
+    question = Questions.query.get_or_404(question_id)
+    chapter_id = question.chapter_id
+    db.session.delete(question)
+    db.session.commit()
+    flash('Question deleted successfully!', 'success')
+    return redirect(url_for('show_questions', chapter_id=chapter_id))
+
+
+@app.route('/add/question/<int:subject_id>/<int:chapter_id>')
+@admin_required
+def add_questions(subject_id, chapter_id):
+    chapter = Chapter.query.get(chapter_id)
+    subject=Subject.query.get(subject_id)
+    return render_template('add_questions.html', chapter=chapter, subject=subject)
+
+@app.route('/add/questions/<int:subject_id>/<int:chapter_id>', methods=['POST'])
+@admin_required
+def add_questions_post(subject_id, chapter_id):
+    q_statement = request.form['q_statement']
+    option_a = request.form['option1']
+    option_b = request.form['option2']
+    option_c = request.form['option3']
+    option_d = request.form['option4']
+    correct_answer = request.form['answer']
+
+    question = Questions(
+        q_statement=q_statement,
+        option_a=option_a,
+        option_b=option_b,
+        option_c=option_c,
+        option_d=option_d,
+        correct_answer=correct_answer,
+        chapter_id=chapter_id
+    )
+    db.session.add(question)
+    db.session.commit()
+    subject=Subject.query.get(subject_id)
+    chapter=Chapter.query.get(chapter_id)
+    return redirect(url_for('show_subject', id=subject.id))
 
 @app.route('/add/chapter/<int:id>')
 @admin_required
@@ -154,26 +239,99 @@ def students():
     students = User.query.filter_by(is_admin=False).all()
     return render_template('student_details.html', students=students)
 
-@app.route('/add/question/<int:id>')
+@app.route('/student_info/<int:student_id>')
 @admin_required
-def add_questions(id):
-    chapter = Chapter.query.get(id)
-    return render_template('add_questions.html', chapter=chapter)
+def student_info(student_id):
+    user = User.query.get(student_id)
+    enrollments = user.enrollments
 
-@app.route('/add/questions/<int:id>', methods=['POST'])
-@admin_required
-def add_questions_post(id):
-    q_statement = request.form['q_statement']
-    option_a = request.form['option1']
-    option_b = request.form['option2']
-    option_c = request.form['option3']
-    option_d = request.form['option4']
-    correct_answer = request.form['answer']
+    # Get highest score per chapter
+    all_scores = Scores.query.filter_by(user_id=user.id).all()
+    highest_scores = {}
 
-    question = Questions(q_statement=q_statement, option_a=option_a, option_b=option_b, option_c=option_c, option_d=option_d, correct_answer=correct_answer, chapter_id=id)
-    db.session.add(question)
-    db.session.commit()
-    return redirect(url_for('show_subject', id=id))
+    for score in all_scores:
+        chapter_id = score.chapter_id
+        if chapter_id not in highest_scores or score.score > highest_scores[chapter_id]:
+            highest_scores[chapter_id] = score.score
+
+    chapter_labels = []
+    chapter_scores = []
+
+    for chapter_id, score in highest_scores.items():
+        chapter = Chapter.query.get(chapter_id)
+        if chapter.chapter_name == None:
+            chapter_labels.append("Invaild Chapter")
+        else:
+            chapter_labels.append(f"{chapter.chapter_name}")
+        chapter_scores.append(score)
+
+    # Generate plot only if there is data
+    plot_filename = None
+    if chapter_scores:
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.bar(chapter_labels, chapter_scores, color='skyblue')
+        ax.set_title('Highest Score per Chapter')
+        ax.set_xlabel('Chapters')
+        ax.set_ylabel('Score')
+        plt.xticks(rotation=30, ha='right')
+        plt.tight_layout()
+
+        # Save the plot to static folder
+        plot_filename = f"{uuid.uuid4().hex}.png"
+        plot_path = os.path.join('static', 'plots', plot_filename)
+        os.makedirs(os.path.dirname(plot_path), exist_ok=True)
+        plt.savefig(plot_path)
+        plt.close()
+
+    return render_template('student_info.html',
+                           student=user,
+                           enrollments=enrollments,
+                           histogram_path=plot_path)
+
+@app.route('/summary')
+@auth_required
+def student_summary():
+    user = User.query.get(session['user_id'])
+
+    # Get highest score per chapter
+    all_scores = Scores.query.filter_by(user_id=user.id).all()
+    highest_scores = {}
+
+    for score in all_scores:
+        chapter_id = score.chapter_id
+        if chapter_id not in highest_scores or score.score > highest_scores[chapter_id]:
+            highest_scores[chapter_id] = score.score
+
+    chapter_labels = []
+    chapter_scores = []
+
+    for chapter_id, score in highest_scores.items():
+        chapter = Chapter.query.get(chapter_id)
+        if chapter.chapter_name == None:
+            chapter_labels.append("Invaild Chapter")
+        else:
+            chapter_labels.append(f"{chapter.chapter_name}")
+        chapter_scores.append(score)
+
+    # Generate plot only if there is data
+    plot_filename = None
+    if chapter_scores:
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.bar(chapter_labels, chapter_scores, color='skyblue')
+        ax.set_title('Highest Score per Chapter')
+        ax.set_xlabel('Chapters')
+        ax.set_ylabel('Score')
+        plt.xticks(rotation=30, ha='right')
+        plt.tight_layout()
+
+        # Save the plot to static folder
+        plot_filename = f"{uuid.uuid4().hex}.png"
+        plot_path = os.path.join('static', 'plots', plot_filename)
+        os.makedirs(os.path.dirname(plot_path), exist_ok=True)
+        plt.savefig(plot_path)
+        plt.close()
+
+    return render_template('student_summary.html', plot_filename=plot_filename)
 
 @app.route('/dashboard') 
 @auth_required
@@ -203,6 +361,8 @@ def course_registration():
         db.session.add(enrollment)
         db.session.commit()
         return redirect(url_for('student_dashboard'))
+    
+
 
 @app.route('/chapters/<int:id>')
 @auth_required
@@ -227,19 +387,17 @@ def submit_quiz(chapter_id):
     questions = Questions.query.filter_by(chapter_id=chapter_id).all()
     quiz_duration = 300  
 
-    score = sum(1 for question in questions if request.form.get(f"q{question.id}") == str(question.correct_answer))
-
-    new_score = Scores(
-        user_id=user.id, 
-        chapter_id=chapter.id, 
-        score=score, 
-        date_of_quiz=datetime.now().date(), 
-        time_duration=str(timedelta(seconds=quiz_duration))
-    )
+    score = 0
+    for question in questions:
+        user_answer = request.form.get(f"q{question.id}")
+        if user_answer == str(question.correct_answer):
+            score += 1
+    new_score = Scores(user_id=user.id, chapter_id=chapter.id, score=score, date_of_quiz=str(datetime.now()), 
+                       time_duration=str(timedelta(seconds=quiz_duration)))
     db.session.add(new_score)
     db.session.commit()
 
-    return redirect(url_for('results', score_id=new_score.id))  
+    return redirect(url_for('results'))
 
 @app.route('/results')
 @auth_required
@@ -248,9 +406,10 @@ def results():
     latest_score = Scores.query.filter_by(user_id=user.id).order_by(Scores.date_of_quiz.desc()).first()
     
     if not latest_score:
+        flash("No quiz attempts found.", "warning")
         return redirect(url_for('student_dashboard'))
 
-    return render_template('score.html', user=user, score=latest_score)  
+    return render_template('score.html', user=user, score=latest_score)
 
 
 
