@@ -1,0 +1,48 @@
+{% extends 'after_login_base.html' %}
+{% block title %}Edit Question{% endblock %}
+{% block content %}
+<header>
+    <nav class="navbar navbar-expand-lg container-fluid shadow" id="navbar">
+        <a class="navbar-brand" href="{{ url_for('home_page') }}"><img src="/static/images/website-logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav" id="navbaroptions">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-dark">Log Out</button></a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main class="container mt-5">
+    <h2 class="mb-4">Edit Question</h2>
+    <form method="POST" action="{{ url_for('edit_question', question_id=question.id) }}">
+        <div class="form-group">
+            <label>Question Statement</label>
+            <textarea class="form-control" name="q_statement" required>{{ question.q_statement }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Option A</label>
+            <input type="text" class="form-control" name="option_a" value="{{ question.option_a }}" required>
+        </div>
+        <div class="form-group">
+            <label>Option B</label>
+            <input type="text" class="form-control" name="option_b" value="{{ question.option_b }}" required>
+        </div>
+        <div class="form-group">
+            <label>Option C</label>
+            <input type="text" class="form-control" name="option_c" value="{{ question.option_c }}" required>
+        </div>
+        <div class="form-group">
+            <label>Option D</label>
+            <input type="text" class="form-control" name="option_d" value="{{ question.option_d }}" required>
+        </div>
+        <div class="form-group">
+            <label>Correct Answer (A/B/C/D)</label>
+            <input type="text" class="form-control" name="correct_answer" value="{{ question.correct_answer }}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Update Question</button>
+        <a href="{{ url_for('show_questions', chapter_id=question.chapter_id) }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</main>
+{% endblock %}

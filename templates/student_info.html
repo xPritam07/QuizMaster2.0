@@ -1,0 +1,49 @@
+{% extends 'after_login_base.html' %}
+{% block title %}
+    {{ student.full_name }} 
+{% endblock %}
+{% block content %}
+<header>
+    <nav class="navbar navbar-expand-lg container-fluid shadow" id="navbar">
+        <a class="navbar-brand" href="{{ url_for('home_page') }}"><img src="/static/images/website-logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav
+            " id="navbaroptions">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('students') }}"><button type="button" class="btn btn-dark">Go Back</button></a></li>
+            </ul>
+            <ul class="navbar-nav
+            " id="navbaroptions">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-dark">Log Out</button></a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main>
+<div class="container mt-5">
+    <h2>Student Info</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ student.full_name }}</h5>
+            <p class="card-text"><strong>Email:</strong> {{ student.username }}</p>
+        </div>
+    </div>
+
+    <h4>Registered Subjects</h4>
+    {% for enrollment in enrollments %}
+    <ul class="list-group mb-4">
+        <li class="list-group-item">{{ enrollment.subject.sub_name }}</li>
+    </ul>
+    {% endfor %}
+    
+    <h4>Highest Scores per Chapter</h4>
+    {% if histogram_path %}
+        <img src="{{ url_for('static', filename=histogram_path.split('static/')[1]) }}" class="img-fluid mt-3" alt="Score Histogram">
+    {% else %}
+        <p>No quiz attempts recorded.</p>
+    {% endif %}
+</div>
+</main>
+{% endblock %}

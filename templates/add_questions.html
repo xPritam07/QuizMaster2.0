@@ -11,7 +11,7 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav" id="navbaroptions">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('show_subject', id=chapter.id) }}"><button type="button" class="btn btn-dark">Go Back</button></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('show_subject', id=subject.id) }}"><button type="button" class="btn btn-dark">Go Back</button></a></li>
                 </ul>
                 <ul class="navbar-nav" id="navbaroptions">
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-dark">Log Out</button></a></li>
@@ -23,7 +23,7 @@
         <h2>
             Add quiz
         </h2>
-        <form action="{{ url_for('add_questions_post', id=chapter.id) }}" method="POST" class="container">
+        <form action="{{ url_for('add_questions_post', subject_id=subject.id ,chapter_id=chapter.id) }}" method="POST" class="container">
             <div class="mb-3">
                 <label for="q_statement" class="form-label">Question</label>
                 <input type="text" class="form-control" id="q_statement" name="q_statement" required>

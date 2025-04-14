@@ -11,7 +11,7 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav" id="navbaroptions">
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('course_registration') }}" id="coursebutton"><button type="button" class="btn btn-dark">Courses</button></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('student_dashboard') }}" id="coursebutton"><button type="button" class="btn btn-dark">Go Back</button></a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-dark">Log Out</button></a></li>
             </ul>
         </div>
@@ -21,7 +21,8 @@
     <div class="main_content">  
         <div>
             <h2>Chapters</h2>
-            <table class="table table-striped table-hover student_course_table">
+            <div class="container d-flex justify-content-center">
+                <table class="table table-striped table-hover student_course_table text-center w-100" style="max-width: 75%;"> 
                 <thead>
                     <tr>
                         <th>Chapter Name</th>
@@ -36,7 +37,8 @@
                         </tr>
                     {% endfor %}
                 </tbody>
-            </table>
+                </table>
+            </div>
         </div>
     </div>
 </main>

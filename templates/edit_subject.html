@@ -1,0 +1,36 @@
+{% extends 'after_login_base.html' %}
+{% block title %}Edit Subject{% endblock %}
+{% block content %}
+<header>
+    <nav class="navbar navbar-expand-lg container-fluid shadow" id="navbar">
+        <a class="navbar-brand" href="{{ url_for('home_page') }}"><img src="/static/images/website-logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav" id="navbaroptions">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}"><button type="button" class="btn btn-dark">Go Back</button></a></li>
+            </ul>
+            <ul class="navbar-nav" id="navbaroptions">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-dark">Log Out</button></a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main>
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Subject</h2>
+    <form method="POST" action="{{ url_for('edit_subject', id=subject.id) }}">
+        <div class="form-group mb-3">
+            <label for="sub_name">Subject Name</label>
+            <input type="text" class="form-control" id="sub_name" name="sub_name" value="{{ subject.sub_name }}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required>{{ subject.description }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Update Subject</button>
+    </form>
+</div>
+</main>
+{% endblock %}

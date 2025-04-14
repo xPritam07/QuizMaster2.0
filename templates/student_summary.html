@@ -1,0 +1,34 @@
+{% extends 'after_login_base.html' %}
+{% block title %}
+    Summary Page
+{% endblock %}
+{% block content %}
+<header>
+    <nav class="navbar navbar-expand-lg container-fluid shadow" id="navbar">
+        <a class="navbar-brand" href="{{ url_for('home_page') }}"><img src="/static/images/website-logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav" id="navbaroptions">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('student_dashboard') }}" id="coursebutton"><button
+                        type="button" class="btn btn-dark">Dashboard</button></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><button type="button"
+                                                                                                 class="btn btn-dark">Log Out</button></a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<section class="container my-5">
+    <h2 class="text-center mb-4">Your Performance Summary</h2>
+    {% if plot_filename %}
+    <div class="text-center">
+        <img src="{{ url_for('static', filename='plots/' + plot_filename) }}" class="img-fluid rounded shadow" alt="Score Histogram">
+    </div>
+    {% else %}
+    <p class="text-center">No quiz attempts yet.</p>
+    {% endif %}
+</section>
+{% endblock %}
