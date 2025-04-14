@@ -121,7 +121,6 @@ def edit_subject(id):
         subject.sub_name = request.form['sub_name']
         subject.description = request.form['description']
         db.session.commit()
-        flash('Subject updated successfully!', 'success')
         return redirect(url_for('admin_dashboard'))
 
     return render_template('edit_subject.html', subject=subject)
@@ -169,7 +168,6 @@ def delete_question(question_id):
     chapter_id = question.chapter_id
     db.session.delete(question)
     db.session.commit()
-    flash('Question deleted successfully!', 'success')
     return redirect(url_for('show_questions', chapter_id=chapter_id))
 
 
@@ -245,7 +243,6 @@ def student_info(student_id):
     user = User.query.get(student_id)
     enrollments = user.enrollments
 
-    # Get highest score per chapter
     all_scores = Scores.query.filter_by(user_id=user.id).all()
     highest_scores = {}
 
@@ -265,7 +262,6 @@ def student_info(student_id):
             chapter_labels.append(f"{chapter.chapter_name}")
         chapter_scores.append(score)
 
-    # Generate plot only if there is data
     plot_filename = None
     if chapter_scores:
         fig, ax = plt.subplots(figsize=(10, 5))
@@ -276,7 +272,6 @@ def student_info(student_id):
         plt.xticks(rotation=30, ha='right')
         plt.tight_layout()
 
-        # Save the plot to static folder
         plot_filename = f"{uuid.uuid4().hex}.png"
         plot_path = os.path.join('static', 'plots', plot_filename)
         os.makedirs(os.path.dirname(plot_path), exist_ok=True)
@@ -293,7 +288,6 @@ def student_info(student_id):
 def student_summary():
     user = User.query.get(session['user_id'])
 
-    # Get highest score per chapter
     all_scores = Scores.query.filter_by(user_id=user.id).all()
     highest_scores = {}
 
@@ -313,7 +307,6 @@ def student_summary():
             chapter_labels.append(f"{chapter.chapter_name}")
         chapter_scores.append(score)
 
-    # Generate plot only if there is data
     plot_filename = None
     if chapter_scores:
         fig, ax = plt.subplots(figsize=(10, 5))
